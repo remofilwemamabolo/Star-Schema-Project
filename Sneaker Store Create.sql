@@ -27,10 +27,13 @@ Season VARCHAR(255)
 CREATE TABLE Dim_SalesPerson (
 SalesPerson_ID INT PRIMARY KEY,
 FullName VARCHAR(255),
-Commission_Rate DECIMAL(2),
-Hourly_Rate DECIMAL(2),
+Commission_Rate DECIMAL(13,2),
+Hourly_Rate DECIMAL(13,2),
 Sales_Role VARCHAR(255)
 )
+
+
+
 --Store_ID INT
 
 --product info
@@ -40,9 +43,11 @@ Name VARCHAR(255),
 Brand VARCHAR(255),
 Colourway VARCHAR(255),
 Size INT,
-Cost DECIMAL(2),
-Price DECIMAL(2)
+Cost DECIMAL(13,2),
+Price DECIMAL(13,2)
 )
+
+--EDITING THE DATA TYPE
 
 --location and store info
 CREATE TABLE Dim_Store (
@@ -64,31 +69,24 @@ CREATE TABLE Dim_Fulfilment(
 Fulfilment_ID INT PRIMARY KEY,
 Method VARCHAR(255),
 Carrier VARCHAR(255),
-Tracking_number INT,
+Tracking_number VARCHAR(20),
 Delivery_status VARCHAR(255)
---Shipped_Date DATE,
---Estimated_Date DATE,
---Delivery_Date DATE
 )
 
----- Role-playing FK references into dim_date
---    shipped_date_id         INT            REFERENCES dim_date(date_id),
---    promised_date_id        INT            REFERENCES dim_date(date_id),
---    delivered_date_id       INT            REFERENCES dim_date(date_id),  -- nullable until confirmed
 
-
-CREATE TABLE fact_sales (
-sales_id INT PRIMARY KEY,
+CREATE TABLE Fact_Sales (
+Sales_ID INT PRIMARY KEY,
  
 -- Dim foreign keys
-Customer_ID    INT REFERENCES Dim_Customer(Customer_ID),  -- nullable for guest checkout
-Date_ID        date NOT NULL REFERENCES Dim_Date(Date_ID),
-Store_ID       INT NOT NULL  REFERENCES Dim_Store(Store_ID),
-Product_ID     INT NOT NULL  REFERENCES Dim_Product(Product_ID),
-Channel_ID     INT NOT NULL  REFERENCES Dim_Channel(Channel_ID),
-Fulfilment_ID  INT NOT NULL  REFERENCES Dim_Fulfilment(Fulfilment_ID),
-SalesPerson_ID INT NOT NULL  REFERENCES Dim_SalesPerson(SalesPerson_ID),
-Unit_price     DECIMAL(2),
+Customer_ID    INT			 FOREIGN KEY REFERENCES Dim_Customer(Customer_ID),  -- nullable for guest checkout
+Date_ID        date NOT NULL FOREIGN KEY REFERENCES Dim_Date(Date_ID),
+Store_ID       INT NOT NULL  FOREIGN KEY REFERENCES Dim_Store(Store_ID),
+Product_ID     INT NOT NULL  FOREIGN KEY REFERENCES Dim_Product(Product_ID),
+Channel_ID     INT NOT NULL  FOREIGN KEY REFERENCES Dim_Channel(Channel_ID),
+Fulfilment_ID  INT NOT NULL  FOREIGN KEY REFERENCES Dim_Fulfilment(Fulfilment_ID),
+SalesPerson_ID INT NOT NULL  FOREIGN KEY REFERENCES Dim_SalesPerson(SalesPerson_ID),
+Unit_price     DECIMAL(13,2),
 Quantity       INT,
-Discount	   DECIMAL(2)
+Discount	  DECIMAL(13,2)
 )
+
